@@ -1,0 +1,11 @@
+services:
+  oidc-test:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - oidc-data:/data
+    command: ["-port", "8080", "-base-url", "http://localhost:8080", "-db-path", "/data/oidc-test.db"]
+
+volumes:
+  oidc-data:
