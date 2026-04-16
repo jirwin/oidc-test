@@ -1,0 +1,14 @@
+{{define "title"}}New Client - OIDC Test Provider{{end}}
+{{define "content"}}
+<h1>New Client for {{.Issuer.Name}}</h1>
+<form method="POST" action="/admin/issuers/{{.Issuer.ID}}/clients">
+    <label for="name">Client Name</label>
+    <input type="text" id="name" name="name" placeholder="My Test App">
+
+    <label for="redirect_uri">Redirect URI</label>
+    <input type="url" id="redirect_uri" name="redirect_uri" placeholder="https://example.com/callback" required>
+
+    <button type="submit" class="btn">Create Client</button>
+    <a href="/admin/issuers/{{.Issuer.ID}}">Cancel</a>
+</form>
+{{end}}

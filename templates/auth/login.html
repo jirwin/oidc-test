@@ -1,0 +1,26 @@
+{{define "title"}}Sign In - {{.IssuerName}}{{end}}
+{{define "content"}}
+<div class="auth-box">
+    <h1>Sign In</h1>
+    <p class="subtitle">{{.IssuerName}} is requesting access for <strong>{{.ClientName}}</strong></p>
+
+    <form method="POST" action="/issuers/{{.IssuerID}}/authorize">
+        <input type="hidden" name="client_id" value="{{.ClientID}}">
+        <input type="hidden" name="redirect_uri" value="{{.RedirectURI}}">
+        <input type="hidden" name="scope" value="{{.Scope}}">
+        <input type="hidden" name="state" value="{{.State}}">
+        <input type="hidden" name="nonce" value="{{.Nonce}}">
+        <input type="hidden" name="code_challenge" value="{{.CodeChallenge}}">
+        <input type="hidden" name="code_challenge_method" value="{{.CodeChallengeMethod}}">
+
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" placeholder="Enter any username" required autofocus>
+        <p class="hint">Prefix with "admin" for admin privileges (e.g., adminuser)</p>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Any password works" required>
+
+        <button type="submit" class="btn btn-primary">Sign In</button>
+    </form>
+</div>
+{{end}}

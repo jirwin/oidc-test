@@ -1,0 +1,23 @@
+# Compiled binary
+oidc-test
+oidc-teste
+
+# SQLite database files
+*.db
+*.db-shm
+*.db-wal
+*.db-journal
+
+# IDE / editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Claude Code local settings
+.claude/
+
+# OS files
+.DS_Store
+Thumbs.db

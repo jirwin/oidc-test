@@ -1,0 +1,29 @@
+{{define "title"}}Issuers - OIDC Test Provider{{end}}
+{{define "content"}}
+<h1>Issuers</h1>
+<a href="/admin/issuers/new" class="btn">New Issuer</a>
+{{if .Issuers}}
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Issuer URL</th>
+            <th>Scopes</th>
+            <th>Created</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{range .Issuers}}
+        <tr>
+            <td><a href="/admin/issuers/{{.ID}}">{{.Name}}</a></td>
+            <td><code>{{$.BaseURL}}/issuers/{{.ID}}</code></td>
+            <td>{{.Scopes}}</td>
+            <td>{{.CreatedAt.Format "2006-01-02 15:04"}}</td>
+        </tr>
+        {{end}}
+    </tbody>
+</table>
+{{else}}
+<p>No issuers yet. Create one to get started.</p>
+{{end}}
+{{end}}

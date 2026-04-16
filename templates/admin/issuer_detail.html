@@ -1,0 +1,72 @@
+{{define "title"}}{{.Issuer.Name}} - OIDC Test Provider{{end}}
+{{define "content"}}
+<h1>{{.Issuer.Name}}</h1>
+
+<div class="info-box">
+    <h3>Issuer Details</h3>
+    <dl>
+        <dt>Issuer URL</dt>
+        <dd><code>{{.IssuerURL}}</code></dd>
+        <dt>Discovery URL</dt>
+        <dd><code>{{.IssuerURL}}/.well-known/openid-configuration</code></dd>
+        <dt>JWKS URL</dt>
+        <dd><code>{{.IssuerURL}}/jwks</code></dd>
+        <dt>Authorize URL</dt>
+        <dd><code>{{.IssuerURL}}/authorize</code></dd>
+        <dt>Token URL</dt>
+        <dd><code>{{.IssuerURL}}/token</code></dd>
+        <dt>UserInfo URL</dt>
+        <dd><code>{{.IssuerURL}}/userinfo</code></dd>
+        <dt>Scopes</dt>
+        <dd>{{.Issuer.Scopes}}</dd>
+        <dt>Access Token TTL</dt>
+        <dd>{{if .Issuer.AccessTokenTTL}}{{.Issuer.AccessTokenTTL}}{{else}}<em>server default</em>{{end}}</dd>
+        <dt>Refresh Token TTL</dt>
+        <dd>{{if .Issuer.RefreshTokenTTL}}{{.Issuer.RefreshTokenTTL}}{{else}}<em>server default</em>{{end}}</dd>
+        <dt>Auth Code TTL</dt>
+        <dd>{{if .Issuer.AuthCodeTTL}}{{.Issuer.AuthCodeTTL}}{{else}}<em>server default</em>{{end}}</dd>
+        <dt>Key ID</dt>
+        <dd><code>{{.Issuer.KeyID}}</code></dd>
+    </dl>
+    <a href="/admin/issuers/{{.Issuer.ID}}/edit" class="btn btn-small">Edit</a>
+    <form method="POST" action="/admin/issuers/{{.Issuer.ID}}/delete" style="display:inline" onsubmit="return confirm('Delete this issuer?')">
+        <button type="submit" class="btn btn-danger btn-small">Delete</button>
+    </form>
+</div>
+
+<h2>Clients</h2>
+<a href="/admin/issuers/{{.Issuer.ID}}/clients/new" class="btn">New Client</a>
+
+{{if .Clients}}
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Client ID</th>
+            <th>Client Secret</th>
+            <th>Redirect URI</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{range .Clients}}
+        <tr>
+            <td>{{.Name}}</td>
+            <td><code>{{.ClientID}}</code></td>
+            <td><code>{{.ClientSecret}}</code></td>
+            <td><code>{{.RedirectURI}}</code></td>
+            <td>
+                <form method="POST" action="/admin/issuers/{{$.Issuer.ID}}/clients/{{.ID}}/delete" onsubmit="return confirm('Delete this client?')">
+                    <button type="submit" class="btn btn-danger btn-small">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {{end}}
+    </tbody>
+</table>
+{{else}}
+<p>No clients yet.</p>
+{{end}}
+
+<p><a href="/admin">&larr; Back to issuers</a></p>
+{{end}}

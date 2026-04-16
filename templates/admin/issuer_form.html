@@ -1,0 +1,26 @@
+{{define "title"}}{{if .IsNew}}New Issuer{{else}}Edit Issuer{{end}} - OIDC Test Provider{{end}}
+{{define "content"}}
+<h1>{{if .IsNew}}New Issuer{{else}}Edit Issuer{{end}}</h1>
+<form method="POST" action="{{if .IsNew}}/admin/issuers{{else}}/admin/issuers/{{.Issuer.ID}}{{end}}">
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" value="{{if not .IsNew}}{{.Issuer.Name}}{{end}}" required>
+
+    <label for="scopes">Scopes (space-separated)</label>
+    <input type="text" id="scopes" name="scopes" value="{{if not .IsNew}}{{.Issuer.Scopes}}{{else}}openid profile email{{end}}">
+
+    <h3>Token Lifetimes</h3>
+    <p class="hint">Leave blank to use server defaults. Use Go duration format: 1h, 30m, 720h, etc.</p>
+
+    <label for="access_token_ttl">Access Token TTL</label>
+    <input type="text" id="access_token_ttl" name="access_token_ttl" placeholder="e.g. 1h" value="{{if not .IsNew}}{{.Issuer.AccessTokenTTL}}{{end}}">
+
+    <label for="refresh_token_ttl">Refresh Token TTL</label>
+    <input type="text" id="refresh_token_ttl" name="refresh_token_ttl" placeholder="e.g. 720h" value="{{if not .IsNew}}{{.Issuer.RefreshTokenTTL}}{{end}}">
+
+    <label for="auth_code_ttl">Auth Code TTL</label>
+    <input type="text" id="auth_code_ttl" name="auth_code_ttl" placeholder="e.g. 10m" value="{{if not .IsNew}}{{.Issuer.AuthCodeTTL}}{{end}}">
+
+    <button type="submit" class="btn">{{if .IsNew}}Create{{else}}Update{{end}}</button>
+    <a href="/admin">Cancel</a>
+</form>
+{{end}}

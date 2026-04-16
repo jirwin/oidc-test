@@ -1,0 +1,30 @@
+{{define "title"}}Authorize - {{.IssuerName}}{{end}}
+{{define "content"}}
+<div class="auth-box">
+    <h1>Authorize Access</h1>
+    <p class="subtitle"><strong>{{.ClientName}}</strong> is requesting the following permissions:</p>
+
+    <div class="scope-list">
+        {{range .Scopes}}
+        <span class="scope-badge">{{.}}</span>
+        {{end}}
+    </div>
+
+    <p>Signed in as: <strong>{{.Username}}</strong>{{if .IsAdmin}} <span class="scope-badge admin">admin</span>{{end}}</p>
+
+    <form method="POST" action="/issuers/{{.IssuerID}}/consent">
+        <input type="hidden" name="client_id" value="{{.ClientID}}">
+        <input type="hidden" name="redirect_uri" value="{{.RedirectURI}}">
+        <input type="hidden" name="scope" value="{{.Scope}}">
+        <input type="hidden" name="state" value="{{.State}}">
+        <input type="hidden" name="nonce" value="{{.Nonce}}">
+        <input type="hidden" name="code_challenge" value="{{.CodeChallenge}}">
+        <input type="hidden" name="code_challenge_method" value="{{.CodeChallengeMethod}}">
+        <input type="hidden" name="username" value="{{.Username}}">
+
+        <div class="btn-group">
+            <button type="submit" class="btn btn-primary">Authorize</button>
+        </div>
+    </form>
+</div>
+{{end}}
