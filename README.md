@@ -122,6 +122,49 @@ curl -X POST http://localhost:8080/api/issuers/{id}/claims \
   -d '{"claim_key": "role", "claim_value": "\"admin\"", "username": "testuser"}'
 ```
 
+## TLS / HTTPS
+
+oidc-test serves plain HTTP. For HTTPS with a valid TLS certificate, run it behind a reverse proxy.
+
+### Caddy (recommended)
+
+[Caddy](https://caddyserver.com/) handles Let's Encrypt certificates automatically with no configuration:
+
+```
+oidc.example.com {
+    reverse_proxy localhost:8080
+}
+```
+
+Run with `caddy run --config Caddyfile`. Caddy provisions and renews certificates on its own.
+
+### nginx
+
+```nginx
+server {
+    listen 443 ssl;
+    server_name oidc.example.com;
+
+    ssl_certificate /etc/letsencrypt/live/oidc.example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/oidc.example.com/privkey.pem;
+
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+Use [certbot](https://certbot.eff.org/) to obtain and renew Let's Encrypt certificates.
+
+When running behind a reverse proxy, set `-base-url` to your external HTTPS URL so that issuer claims and discovery documents contain the correct addresses:
+
+```sh
+./oidc-test -port 8080 -base-url https://oidc.example.com
+```
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md).
